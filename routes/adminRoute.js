@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const multer = require("multer")
 const upload = multer({ dest: 'uploads/'})
-const { createPrediction, createVipPrediction, createFreeTip, createUpcoming, getFreeExpert, getVipDailyTen, getSupreme, getBankerOfTheDay, getVipMega, createVipSupremePrediction, createSinglePrediction, createDailyTenPrediction,createBetOfTheDay, createVipExpertPrediction,createVipSinglePrediction, createVipInvestmentsPrediction, createVipMegaPrediction, updatePrediction, getPrediction, getBetOfTheDay, getUpcoming, getPredictions,  getFreeTips, getVipPredictions, getPredictionInCategory, deletePrediction, createBankerPrediction } = require('../controllers/adminController')
+const { createPrediction, createVipPrediction, createFreeTip, createUpcoming, getJackpot, createJackpotPrediction, getFreeExpert, getVipDailyTen, getSupreme, getBankerOfTheDay, getVipMega, createVipSupremePrediction, createSinglePrediction, createDailyTenPrediction,createBetOfTheDay, createVipExpertPrediction,createVipSinglePrediction, createVipInvestmentsPrediction, createVipMegaPrediction, updatePrediction, getPrediction, getBetOfTheDay, getUpcoming, getPredictions,  getFreeTips, getVipPredictions, getPredictionInCategory, deletePrediction, createBankerPrediction } = require('../controllers/adminController')
 const { protect } = require('../middleware/authMiddleware')
 
 router.route("/:date").get(getPredictions)
@@ -12,6 +12,7 @@ router.route("/vipPredictions/:value/:date").get(getVipPredictions)
 router.route("/upcomingPredictions/:value/:date").get(getUpcoming)
 router.route("/vipSupreme/:value/:date").get(getSupreme)
 router.route("/vipMega/:value/:date").get(getVipMega)
+router.route("/jackpot-predictions/:value/:date").get(getJackpot)
 router.route("/bet/:value/:date").get(getBetOfTheDay)
 router.route("/bankerPrediction/:value/:date").get(getBankerOfTheDay)
 router.route("/daily-ten-prediction/:value/:date").get(getVipDailyTen)
@@ -21,21 +22,41 @@ router.route("/create").post(
   );
 
   router.route("/create/:vip").post(
-    protect, createVipPrediction
+    protect, upload.fields([
+      { name: 'leagueIcon' },
+      { name: 'teamAIcon' },
+      { name: 'teamBIcon' },
+    ]),createVipPrediction
   );
 
   router.route("/create/mega/:vipMega").post(
-    protect, createVipMegaPrediction
+    protect,upload.fields([
+      { name: 'leagueIcon' },
+      { name: 'teamAIcon' },
+      { name: 'teamBIcon' },
+    ]), createVipMegaPrediction
   );
 
-  router.route("/create/freeExpert/:expert").post(protect, createVipExpertPrediction);
+  router.route("/create/freeExpert/:expert").post(protect,upload.fields([
+    { name: 'leagueIcon' },
+    { name: 'teamAIcon' },
+    { name: 'teamBIcon' },
+  ]), createVipExpertPrediction);
 
   router.route("/create/daily/:dailyTen").post(
-    protect, createDailyTenPrediction
+    protect, upload.fields([
+      { name: 'leagueIcon' },
+      { name: 'teamAIcon' },
+      { name: 'teamBIcon' },
+    ]), createDailyTenPrediction
   );
 
   router.route("/create/supremeVip/:supreme").post(
-    protect,  createVipSupremePrediction
+    protect, upload.fields([
+      { name: 'leagueIcon' },
+      { name: 'teamAIcon' },
+      { name: 'teamBIcon' },
+    ]), createVipSupremePrediction
   );
 
   router.route("/create/singleTip/:single").post(
@@ -46,20 +67,46 @@ router.route("/create").post(
     ]), createSinglePrediction
   );
 
+  router.route("/create/jackpot-prediction/:jackpot").post(
+    protect, upload.fields([
+      { name: 'leagueIcon' },
+      { name: 'teamAIcon' },
+      { name: 'teamBIcon' },
+    ]), createJackpotPrediction
+  );
+
+
+
   router.route("/create/banker-predictions/:banker").post(
-    protect,  createBankerPrediction
+    protect, upload.fields([
+      { name: 'leagueIcon' },
+      { name: 'teamAIcon' },
+      { name: 'teamBIcon' },
+    ]), createBankerPrediction
   );
 
   router.route("/create/investments/:vipInvestments").post(
-    protect,  createVipInvestmentsPrediction
+    protect, upload.fields([
+      { name: 'leagueIcon' },
+      { name: 'teamAIcon' },
+      { name: 'teamBIcon' },
+    ]), createVipInvestmentsPrediction
   );
 
   router.route("/create/singleVip/:single").post(
-    protect, createVipSinglePrediction
+    protect, upload.fields([
+      { name: 'leagueIcon' },
+      { name: 'teamAIcon' },
+      { name: 'teamBIcon' },
+    ]), createVipSinglePrediction
   );
 
   router.route("/create/tip/:freeTip").post(
-    protect, createFreeTip
+    protect, upload.fields([
+      { name: 'leagueIcon' },
+      { name: 'teamAIcon' },
+      { name: 'teamBIcon' },
+    ]),createFreeTip
   );
 
   router.route("/create/upcoming/:upcoming").post(
