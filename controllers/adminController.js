@@ -25,38 +25,39 @@ cloudinary.config({
 const createPrediction = asyncHandler(async (req, res) => {
   const { time, tip, status, formationA, formationB, league, teamAPosition, teamBPosition, category, teamA, teamB, teamAscore, teamBscore, date } = req.body;
 
-  // const leagueIcon = req.files['leagueIcon'][0];
-  // const teamAIcon = req.files['teamAIcon'][0];
-  // const teamBIcon = req.files['teamBIcon'][0];
+  const leagueIcon = req.files['leagueIcon'][0];
+  const teamAIcon = req.files['teamAIcon'][0];
+  const teamBIcon = req.files['teamBIcon'][0];
 
   // Validate the presence of file fields
-  // if (!leagueIcon || !teamAIcon || !teamBIcon) {
-  //   res.status(400).json({ error: "All image files are required" });
-  //   return;
-  // }
+  if (!leagueIcon || !teamAIcon || !teamBIcon) {
+    res.status(400).json({ error: "All image files are required" });
+    return;
+  }
 
   try {
-    // const result = await cloudinary.uploader.upload(leagueIcon.path, {
-    //   width: 500,
-    //   height: 500,
-    //   crop: 'scale',
-    // });
+    const result = await cloudinary.uploader.upload(leagueIcon.path, {
+      width: 500,
+      height: 500,
+      crop: 'scale',
+    });
 
-    // const result2 = await cloudinary.uploader.upload(teamAIcon.path, {
-    //   width: 500,
-    //   height: 500,
-    //   crop: 'scale'
-    // });
+    const result2 = await cloudinary.uploader.upload(teamAIcon.path, {
+      width: 500,
+      height: 500,
+      crop: 'scale'
+    });
 
-    // const result3 = await cloudinary.uploader.upload(teamBIcon.path, {
-    //   width: 500,
-    //   height: 500,
-    //   crop: 'scale'
-    // });
+    const result3 = await cloudinary.uploader.upload(teamBIcon.path, {
+      width: 500,
+      height: 500,
+      crop: 'scale'
+    });
 
 
     const prediction = await Admin.create({
-      time, tip, status, league, category,teamA, teamB, category, teamAscore, teamBscore,date});
+      time, tip, status, league, category,teamA, teamB, teamAscore, teamBscore,date,leagueIcon: result.secure_url, teamAIcon: result2.secure_url, teamBIcon: result3.secure_url });
+
 
     res.status(201).json({
       _id: prediction._id,
@@ -69,6 +70,9 @@ const createPrediction = asyncHandler(async (req, res) => {
       teamBscore: prediction. teamBscore,
       league: prediction.league,
       category: prediction.category,
+      leagueIcon: prediction.leagueIcon,
+      teamAIcon: prediction.teamAIcon,
+      teamBIcon: prediction.teamBIcon,
       date: prediction.date
     });
   } catch (error) {
@@ -81,37 +85,37 @@ const createVipPrediction = asyncHandler(async (req, res) => {
   const { time, tip, status, league, category, teamA, teamB, teamAscore, teamBscore, date } = req.body;
   const vip = req.params.vip
 
-  // const leagueIcon = req.files['leagueIcon'][0];
-  // const teamAIcon = req.files['teamAIcon'][0];
-  // const teamBIcon = req.files['teamBIcon'][0];
+  const leagueIcon = req.files['leagueIcon'][0];
+  const teamAIcon = req.files['teamAIcon'][0];
+  const teamBIcon = req.files['teamBIcon'][0];
 
-  // // Validate the presence of file fields
-  // if (!leagueIcon || !teamAIcon || !teamBIcon) {
-  //   res.status(400).json({ error: "All image files are required" });
-  //   return;
-  // }
+  // Validate the presence of file fields
+  if (!leagueIcon || !teamAIcon || !teamBIcon) {
+    res.status(400).json({ error: "All image files are required" });
+    return;
+  }
 
   try {
-    // const result = await cloudinary.uploader.upload(leagueIcon.path, {
-    //   width: 500,
-    //   height: 500,
-    //   crop: 'scale',
-    // });
+    const result = await cloudinary.uploader.upload(leagueIcon.path, {
+      width: 500,
+      height: 500,
+      crop: 'scale',
+    });
 
-    // const result2 = await cloudinary.uploader.upload(teamAIcon.path, {
-    //   width: 500,
-    //   height: 500,
-    //   crop: 'scale'
-    // });
+    const result2 = await cloudinary.uploader.upload(teamAIcon.path, {
+      width: 500,
+      height: 500,
+      crop: 'scale'
+    });
 
-    // const result3 = await cloudinary.uploader.upload(teamBIcon.path, {
-    //   width: 500,
-    //   height: 500,
-    //   crop: 'scale'
-    // });
+    const result3 = await cloudinary.uploader.upload(teamBIcon.path, {
+      width: 500,
+      height: 500,
+      crop: 'scale'
+    });
 
     const prediction = await Admin.create({
-      time, tip, status, league, category,teamA, teamB, teamAscore, teamBscore, vip,date, });
+      time, tip, status, league, category,teamA, teamB, teamAscore, teamBscore, vip,date,leagueIcon: result.secure_url, teamAIcon: result2.secure_url, teamBIcon: result3.secure_url });
 
     res.status(201).json({
       _id: prediction._id,
@@ -124,6 +128,9 @@ const createVipPrediction = asyncHandler(async (req, res) => {
       teamBscore: prediction. teamBscore,
       league: prediction.league,
       category: prediction.category,
+      leagueIcon: prediction.leagueIcon,
+      teamAIcon: prediction.teamAIcon,
+      teamBIcon: prediction.teamBIcon,
       vip: prediction.vip, 
       date: prediction.date
     });
@@ -137,37 +144,38 @@ const createVipMegaPrediction = asyncHandler(async (req, res) => {
   const { time, tip, status, league, category, teamA, teamB, teamAscore, teamBscore, date } = req.body;
   const vipMega = req.params.vipMega
 
-  // const leagueIcon = req.files['leagueIcon'][0];
-  // const teamAIcon = req.files['teamAIcon'][0];
-  // const teamBIcon = req.files['teamBIcon'][0];
+  const leagueIcon = req.files['leagueIcon'][0];
+  const teamAIcon = req.files['teamAIcon'][0];
+  const teamBIcon = req.files['teamBIcon'][0];
 
   // Validate the presence of file fields
-  // if (!leagueIcon || !teamAIcon || !teamBIcon) {
-  //   res.status(400).json({ error: "All image files are required" });
-  //   return;
-  // }
+  if (!leagueIcon || !teamAIcon || !teamBIcon) {
+    res.status(400).json({ error: "All image files are required" });
+    return;
+  }
 
   try {
-    // const result = await cloudinary.uploader.upload(leagueIcon.path, {
-    //   width: 500,
-    //   height: 500,
-    //   crop: 'scale',
-    // });
+    const result = await cloudinary.uploader.upload(leagueIcon.path, {
+      width: 500,
+      height: 500,
+      crop: 'scale',
+    });
 
-    // const result2 = await cloudinary.uploader.upload(teamAIcon.path, {
-    //   width: 500,
-    //   height: 500,
-    //   crop: 'scale'
-    // });
+    const result2 = await cloudinary.uploader.upload(teamAIcon.path, {
+      width: 500,
+      height: 500,
+      crop: 'scale'
+    });
 
-    // const result3 = await cloudinary.uploader.upload(teamBIcon.path, {
-    //   width: 500,
-    //   height: 500,
-    //   crop: 'scale'
-    // });
+    const result3 = await cloudinary.uploader.upload(teamBIcon.path, {
+      width: 500,
+      height: 500,
+      crop: 'scale'
+    });
 
     const prediction = await Admin.create({
-      time, tip, status, formationA, formationB, teamAPosition, teamBPosition, league, category,teamA, teamB, teamAscore, teamBscore, vipMega,date});
+      time, tip, status, league, category,teamA, teamB, teamAscore, teamBscore, vipMega,date,leagueIcon: result.secure_url, teamAIcon: result2.secure_url, teamBIcon: result3.secure_url });
+    
 
     res.status(201).json({
       _id: prediction._id,
@@ -180,6 +188,9 @@ const createVipMegaPrediction = asyncHandler(async (req, res) => {
       teamBscore: prediction. teamBscore,
       league: prediction.league,
       category: prediction.category,
+      leagueIcon: prediction.leagueIcon,
+      teamAIcon: prediction.teamAIcon,
+      teamBIcon: prediction.teamBIcon,
       vipMega: prediction.vipMega, 
       date: prediction.date
     });
@@ -260,37 +271,38 @@ const createVipInvestmentsPrediction = asyncHandler(async (req, res) => {
   const { time, tip, status, formationA, formationB, league, teamAPosition, teamBPosition, category, teamA, teamB, teamAscore, teamBscore, date } = req.body;
   const vipInvestments = req.params.vipInvestments
 
-  // const leagueIcon = req.files['leagueIcon'][0];
-  // const teamAIcon = req.files['teamAIcon'][0];
-  // const teamBIcon = req.files['teamBIcon'][0];
+  const leagueIcon = req.files['leagueIcon'][0];
+  const teamAIcon = req.files['teamAIcon'][0];
+  const teamBIcon = req.files['teamBIcon'][0];
 
   // // Validate the presence of file fields
-  // if (!leagueIcon || !teamAIcon || !teamBIcon) {
-  //   res.status(400).json({ error: "All image files are required" });
-  //   return;
-  // }
+  if (!leagueIcon || !teamAIcon || !teamBIcon) {
+    res.status(400).json({ error: "All image files are required" });
+    return;
+  }
 
   try {
-    // const result = await cloudinary.uploader.upload(leagueIcon.path, {
-    //   width: 500,
-    //   height: 500,
-    //   crop: 'scale',
-    // });
+    const result = await cloudinary.uploader.upload(leagueIcon.path, {
+      width: 500,
+      height: 500,
+      crop: 'scale',
+    });
 
-    // const result2 = await cloudinary.uploader.upload(teamAIcon.path, {
-    //   width: 500,
-    //   height: 500,
-    //   crop: 'scale'
-    // });
+    const result2 = await cloudinary.uploader.upload(teamAIcon.path, {
+      width: 500,
+      height: 500,
+      crop: 'scale'
+    });
 
-    // const result3 = await cloudinary.uploader.upload(teamBIcon.path, {
-    //   width: 500,
-    //   height: 500,
-    //   crop: 'scale'
-    // });
+    const result3 = await cloudinary.uploader.upload(teamBIcon.path, {
+      width: 500,
+      height: 500,
+      crop: 'scale'
+    });
 
     const prediction = await Admin.create({
-      time, tip, status, formationA, formationB, teamAPosition, teamBPosition, league, category,teamA, teamB, teamAscore, teamBscore, vipInvestments,date});
+      time, tip, status, league, category,teamA, teamB, teamAscore, teamBscore, vipInvestments,date,leagueIcon: result.secure_url, teamAIcon: result2.secure_url, teamBIcon: result3.secure_url });
+
 
     res.status(201).json({
       _id: prediction._id,
@@ -307,6 +319,9 @@ const createVipInvestmentsPrediction = asyncHandler(async (req, res) => {
       teamBPosition: prediction.teamBPosition,
       league: prediction.league,
       category: prediction.category,
+      leagueIcon: prediction.leagueIcon,
+      teamAIcon: prediction.teamAIcon,
+      teamBIcon: prediction.teamBIcon,
       vipInvestments: prediction.vipInvestments, 
       date: prediction.date
     });
@@ -324,37 +339,37 @@ const createVipExpertPrediction = asyncHandler(async (req, res) => {
     return res.status(404).json({ error: "All fields are required" });
   }
 
-  // const leagueIcon = req.files['leagueIcon'][0];
-  // const teamAIcon = req.files['teamAIcon'][0];
-  // const teamBIcon = req.files['teamBIcon'][0];
+  const leagueIcon = req.files['leagueIcon'][0];
+  const teamAIcon = req.files['teamAIcon'][0];
+  const teamBIcon = req.files['teamBIcon'][0];
 
   // Validate the presence of file fields
-  // if (!leagueIcon || !teamAIcon || !teamBIcon) {
-  //   res.status(400).json({ error: "All image files are required" });
-  //   return;
-  // }
+  if (!leagueIcon || !teamAIcon || !teamBIcon) {
+    res.status(400).json({ error: "All image files are required" });
+    return;
+  }
 
   try {
-    // const result = await cloudinary.uploader.upload(leagueIcon.path, {
-    //   width: 500,
-    //   height: 500,
-    //   crop: 'scale',
-    // });
+    const result = await cloudinary.uploader.upload(leagueIcon.path, {
+      width: 500,
+      height: 500,
+      crop: 'scale',
+    });
 
-    // const result2 = await cloudinary.uploader.upload(teamAIcon.path, {
-    //   width: 500,
-    //   height: 500,
-    //   crop: 'scale'
-    // });
+    const result2 = await cloudinary.uploader.upload(teamAIcon.path, {
+      width: 500,
+      height: 500,
+      crop: 'scale'
+    });
 
-    // const result3 = await cloudinary.uploader.upload(teamBIcon.path, {
-    //   width: 500,
-    //   height: 500,
-    //   crop: 'scale'
-    // });
+    const result3 = await cloudinary.uploader.upload(teamBIcon.path, {
+      width: 500,
+      height: 500,
+      crop: 'scale'
+    });
 
     const prediction = await Admin.create({
-      time, tip, status, league, category,teamA, teamB, teamAscore, teamBscore, expert,date});
+      time, tip, status, league, category,teamA, teamB, teamAscore, teamBscore, expert,date,leagueIcon: result.secure_url, teamAIcon: result2.secure_url, teamBIcon: result3.secure_url });
 
     res.status(201).json({
       _id: prediction._id,
@@ -367,6 +382,9 @@ const createVipExpertPrediction = asyncHandler(async (req, res) => {
       teamBscore: prediction. teamBscore,
       league: prediction.league,
       category: prediction.category,
+      leagueIcon: prediction.leagueIcon,
+      teamAIcon: prediction.teamAIcon,
+      teamBIcon: prediction.teamBIcon,
       expert: prediction.expert, 
       date: prediction.date
     });
@@ -380,9 +398,9 @@ const createBankerPrediction = asyncHandler(async (req, res) => {
   const { time, tip, status, formationA, formationB, league, teamAPosition, teamBPosition, category, teamA, teamB, teamAscore, teamBscore, date } = req.body;
   const banker = req.params.banker
 
-  // const leagueIcon = req.files['leagueIcon'][0];
-  // const teamAIcon = req.files['teamAIcon'][0];
-  // const teamBIcon = req.files['teamBIcon'][0];
+  const leagueIcon = req.files['leagueIcon'][0];
+  const teamAIcon = req.files['teamAIcon'][0];
+  const teamBIcon = req.files['teamBIcon'][0];
 
   // Validate the presence of file fields
   if (!time || !tip || !league || !teamA || !teamB || !teamAscore || !teamBscore || !date) {
@@ -391,26 +409,26 @@ const createBankerPrediction = asyncHandler(async (req, res) => {
   }
 
   try {
-    // const result = await cloudinary.uploader.upload(leagueIcon.path, {
-    //   width: 500,
-    //   height: 500,
-    //   crop: 'scale',
-    // });
+    const result = await cloudinary.uploader.upload(leagueIcon.path, {
+      width: 500,
+      height: 500,
+      crop: 'scale',
+    });
 
-    // const result2 = await cloudinary.uploader.upload(teamAIcon.path, {
-    //   width: 500,
-    //   height: 500,
-    //   crop: 'scale'
-    // });
+    const result2 = await cloudinary.uploader.upload(teamAIcon.path, {
+      width: 500,
+      height: 500,
+      crop: 'scale'
+    });
 
-    // const result3 = await cloudinary.uploader.upload(teamBIcon.path, {
-    //   width: 500,
-    //   height: 500,
-    //   crop: 'scale'
-    // });
+    const result3 = await cloudinary.uploader.upload(teamBIcon.path, {
+      width: 500,
+      height: 500,
+      crop: 'scale'
+    });
 
     const prediction = await Admin.create({
-      time, tip, status, league, category,teamA, teamB, teamAscore, teamBscore, banker,date,});
+      time, tip, status, league, category,teamA, teamB, teamAscore, teamBscore, banker,date,leagueIcon: result.secure_url, teamAIcon: result2.secure_url, teamBIcon: result3.secure_url });
 
     res.status(201).json({
       _id: prediction._id,
@@ -423,7 +441,69 @@ const createBankerPrediction = asyncHandler(async (req, res) => {
       teamBscore: prediction. teamBscore,
       league: prediction.league,
       category: prediction.category,
+      leagueIcon: prediction.leagueIcon,
+      teamAIcon: prediction.teamAIcon,
+      teamBIcon: prediction.teamBIcon,
       banker: prediction.banker, 
+      date: prediction.date
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "An error occurred when creating the prediction" });
+  }
+});
+
+const createJackpotPrediction = asyncHandler(async (req, res) => {
+  const { time, tip, status, formationA, formationB, league, teamAPosition, teamBPosition, category, teamA, teamB, teamAscore, teamBscore, date } = req.body;
+  const jackpot = req.params.jackpot
+
+  const leagueIcon = req.files['leagueIcon'][0];
+  const teamAIcon = req.files['teamAIcon'][0];
+  const teamBIcon = req.files['teamBIcon'][0];
+
+  // Validate the presence of file fields
+  if (!time || !tip || !league || !teamA || !teamB || !teamAscore || !teamBscore || !date) {
+    res.status(400).json({ error: "All fields are required" });
+    return;
+  }
+
+  try {
+    const result = await cloudinary.uploader.upload(leagueIcon.path, {
+      width: 500,
+      height: 500,
+      crop: 'scale',
+    });
+
+    const result2 = await cloudinary.uploader.upload(teamAIcon.path, {
+      width: 500,
+      height: 500,
+      crop: 'scale'
+    });
+
+    const result3 = await cloudinary.uploader.upload(teamBIcon.path, {
+      width: 500,
+      height: 500,
+      crop: 'scale'
+    });
+
+    const prediction = await Admin.create({
+      time, tip, status, league, category,teamA, teamB, teamAscore, teamBscore, jackpot,date,leagueIcon: result.secure_url, teamAIcon: result2.secure_url, teamBIcon: result3.secure_url });
+
+    res.status(201).json({
+      _id: prediction._id,
+      time: prediction.time,
+      tip: prediction.tip,
+      status: prediction.status,
+      teamA: prediction.teamA,
+      teamB: prediction.teamB,
+      teamAscore: prediction.teamAscore,
+      teamBscore: prediction. teamBscore,
+      league: prediction.league,
+      category: prediction.category,
+      leagueIcon: prediction.leagueIcon,
+      teamAIcon: prediction.teamAIcon,
+      teamBIcon: prediction.teamBIcon,
+      jackpot: prediction.jackpot, 
       date: prediction.date
     });
   } catch (error) {
@@ -436,37 +516,37 @@ const createVipSupremePrediction = asyncHandler(async (req, res) => {
   const { time, tip, status, formationA, formationB, league, teamAPosition, teamBPosition, category, teamA, teamB, teamAscore, teamBscore, date } = req.body;
   const supreme = req.params.supreme
 
-  // const leagueIcon = req.files['leagueIcon'][0];
-  // const teamAIcon = req.files['teamAIcon'][0];
-  // const teamBIcon = req.files['teamBIcon'][0];
+  const leagueIcon = req.files['leagueIcon'][0];
+  const teamAIcon = req.files['teamAIcon'][0];
+  const teamBIcon = req.files['teamBIcon'][0];
 
   // Validate the presence of file fields
-  // if (!leagueIcon || !teamAIcon || !teamBIcon) {
-  //   res.status(400).json({ error: "All image files are required" });
-  //   return;
-  // }
+  if (!leagueIcon || !teamAIcon || !teamBIcon) {
+    res.status(400).json({ error: "All image files are required" });
+    return;
+  }
 
   try {
-    // const result = await cloudinary.uploader.upload(leagueIcon.path, {
-    //   width: 500,
-    //   height: 500,
-    //   crop: 'scale',
-    // });
+    const result = await cloudinary.uploader.upload(leagueIcon.path, {
+      width: 500,
+      height: 500,
+      crop: 'scale',
+    });
 
-    // const result2 = await cloudinary.uploader.upload(teamAIcon.path, {
-    //   width: 500,
-    //   height: 500,
-    //   crop: 'scale'
-    // });
+    const result2 = await cloudinary.uploader.upload(teamAIcon.path, {
+      width: 500,
+      height: 500,
+      crop: 'scale'
+    });
 
-    // const result3 = await cloudinary.uploader.upload(teamBIcon.path, {
-    //   width: 500,
-    //   height: 500,
-    //   crop: 'scale'
-    // });
+    const result3 = await cloudinary.uploader.upload(teamBIcon.path, {
+      width: 500,
+      height: 500,
+      crop: 'scale'
+    });
 
     const prediction = await Admin.create({
-      time, tip, status, league, category,teamA, teamB, teamAscore, teamBscore, supreme,date,});
+      time, tip, status, league, category,teamA, teamB, teamAscore, teamBscore, supreme,date,leagueIcon: result.secure_url, teamAIcon: result2.secure_url, teamBIcon: result3.secure_url });
 
     res.status(201).json({
       _id: prediction._id,
@@ -479,6 +559,9 @@ const createVipSupremePrediction = asyncHandler(async (req, res) => {
       teamBscore: prediction. teamBscore,
       league: prediction.league,
       category: prediction.category,
+      leagueIcon: prediction.leagueIcon,
+      teamAIcon: prediction.teamAIcon,
+      teamBIcon: prediction.teamBIcon,
       supreme: prediction.supreme, 
       date: prediction.date
     });
@@ -492,37 +575,37 @@ const createDailyTenPrediction = asyncHandler(async (req, res) => {
   const { time, tip, status, formationA, formationB, league, teamAPosition, teamBPosition, category, teamA, teamB, teamAscore, teamBscore, date } = req.body;
   const dailyTen = req.params.dailyTen
 
-  // const leagueIcon = req.files['leagueIcon'][0];
-  // const teamAIcon = req.files['teamAIcon'][0];
-  // const teamBIcon = req.files['teamBIcon'][0];
+  const leagueIcon = req.files['leagueIcon'][0];
+  const teamAIcon = req.files['teamAIcon'][0];
+  const teamBIcon = req.files['teamBIcon'][0];
 
   // Validate the presence of file fields
-  // if (!leagueIcon || !teamAIcon || !teamBIcon) {
-  //   res.status(400).json({ error: "All image files are required" });
-  //   return;
-  // }
+  if (!leagueIcon || !teamAIcon || !teamBIcon) {
+    res.status(400).json({ error: "All image files are required" });
+    return;
+  }
 
   try {
-    // const result = await cloudinary.uploader.upload(leagueIcon.path, {
-    //   width: 500,
-    //   height: 500,
-    //   crop: 'scale',
-    // });
+    const result = await cloudinary.uploader.upload(leagueIcon.path, {
+      width: 500,
+      height: 500,
+      crop: 'scale',
+    });
 
-    // const result2 = await cloudinary.uploader.upload(teamAIcon.path, {
-    //   width: 500,
-    //   height: 500,
-    //   crop: 'scale'
-    // });
+    const result2 = await cloudinary.uploader.upload(teamAIcon.path, {
+      width: 500,
+      height: 500,
+      crop: 'scale'
+    });
 
-    // const result3 = await cloudinary.uploader.upload(teamBIcon.path, {
-    //   width: 500,
-    //   height: 500,
-    //   crop: 'scale'
-    // });
+    const result3 = await cloudinary.uploader.upload(teamBIcon.path, {
+      width: 500,
+      height: 500,
+      crop: 'scale'
+    });
 
     const prediction = await Admin.create({
-      time, tip, status,  league, category,teamA, teamB, teamAscore, teamBscore, dailyTen,date});
+      time, tip, status, league, category,teamA, teamB, teamAscore, teamBscore, dailyTen,date,leagueIcon: result.secure_url, teamAIcon: result2.secure_url, teamBIcon: result3.secure_url });
 
     res.status(201).json({
       _id: prediction._id,
@@ -535,6 +618,9 @@ const createDailyTenPrediction = asyncHandler(async (req, res) => {
       teamBscore: prediction. teamBscore,
       league: prediction.league,
       category: prediction.category,
+      leagueIcon: prediction.leagueIcon,
+      teamAIcon: prediction.teamAIcon,
+      teamBIcon: prediction.teamBIcon,
       dailyTen: prediction.dailyTen, 
       date: prediction.date
     });
@@ -615,37 +701,38 @@ const createFreeTip = asyncHandler(async (req, res) => {
   const { time, tip, status,  league, category, teamA, teamB, teamAscore, teamBscore, date } = req.body;
   const freeTip = req.params.freeTip
 
-  // const leagueIcon = req.files['leagueIcon'][0];
-  // const teamAIcon = req.files['teamAIcon'][0];
-  // const teamBIcon = req.files['teamBIcon'][0];
+  const leagueIcon = req.files['leagueIcon'][0];
+  const teamAIcon = req.files['teamAIcon'][0];
+  const teamBIcon = req.files['teamBIcon'][0];
 
   // Validate the presence of file fields
-  // if (!leagueIcon || !teamAIcon || !teamBIcon) {
-  //   res.status(400).json({ error: "All image files are required" });
-  //   return;
-  // }
+  if (!leagueIcon || !teamAIcon || !teamBIcon) {
+    res.status(400).json({ error: "All image files are required" });
+    return;
+  }
 
   try {
-    // const result = await cloudinary.uploader.upload(leagueIcon.path, {
-    //   width: 500,
-    //   height: 500,
-    //   crop: 'scale',
-    // });
+    const result = await cloudinary.uploader.upload(leagueIcon.path, {
+      width: 500,
+      height: 500,
+      crop: 'scale',
+    });
 
-    // const result2 = await cloudinary.uploader.upload(teamAIcon.path, {
-    //   width: 500,
-    //   height: 500,
-    //   crop: 'scale'
-    // });
+    const result2 = await cloudinary.uploader.upload(teamAIcon.path, {
+      width: 500,
+      height: 500,
+      crop: 'scale'
+    });
 
-    // const result3 = await cloudinary.uploader.upload(teamBIcon.path, {
-    //   width: 500,
-    //   height: 500,
-    //   crop: 'scale'
-    // });
+    const result3 = await cloudinary.uploader.upload(teamBIcon.path, {
+      width: 500,
+      height: 500,
+      crop: 'scale'
+    });
 
     const prediction = await Admin.create({
-      time, tip, status, league, category,teamA, teamB, teamAscore, teamBscore, freeTip,date,});
+      time, tip, status, league, category,teamA, teamB, teamAscore, teamBscore, freeTip,date,leagueIcon: result.secure_url, teamAIcon: result2.secure_url, teamBIcon: result3.secure_url });
+
 
     res.status(201).json({
       _id: prediction._id,
@@ -658,6 +745,9 @@ const createFreeTip = asyncHandler(async (req, res) => {
       teamBscore: prediction. teamBscore,
       league: prediction.league,
       category: prediction.category,
+      leagueIcon: prediction.leagueIcon,
+      teamAIcon: prediction.teamAIcon,
+      teamBIcon: prediction.teamBIcon,
       freeTip: prediction.freeTip,
       date: prediction.date
     });
@@ -1007,6 +1097,20 @@ const getFreeExpert = asyncHandler(async (req, res) => {
   }
 });
 
+const getJackpot = asyncHandler(async (req, res) => {
+  try {
+    const predictions = await Admin.find({ jackpot: decodeURIComponent(req.params.value), date:req.params.date });
+    if (!predictions) {
+      res.status(400);
+      throw new Error("Prediction not found");
+    }else{  
+    res.status(200).json(predictions);
+    }
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 
 const getBetOfTheDay = asyncHandler(async (req, res) => {
   try {
@@ -1074,5 +1178,5 @@ const deletePrediction = asyncHandler(async (req, res) => {
 })
 
 module.exports = {
-    createPrediction, createVipPrediction, getFreeExpert,getBankerOfTheDay, getVipMega, getVipDailyTen, getSupreme, createFreeTip, createBetOfTheDay, createUpcoming, createVipSupremePrediction, createDailyTenPrediction, createSinglePrediction, createVipMegaPrediction, createBankerPrediction, createVipExpertPrediction, createVipSinglePrediction, createVipInvestmentsPrediction, updatePrediction, getPrediction, getBetOfTheDay,getUpcoming, getFreeTips, getVipPredictions, getPredictionInCategory, getPredictions, deletePrediction
+    createPrediction, createVipPrediction, createJackpotPrediction, getJackpot, getFreeExpert,getBankerOfTheDay, getVipMega, getVipDailyTen, getSupreme, createFreeTip, createBetOfTheDay, createUpcoming, createVipSupremePrediction, createDailyTenPrediction, createSinglePrediction, createVipMegaPrediction, createBankerPrediction, createVipExpertPrediction, createVipSinglePrediction, createVipInvestmentsPrediction, updatePrediction, getPrediction, getBetOfTheDay,getUpcoming, getFreeTips, getVipPredictions, getPredictionInCategory, getPredictions, deletePrediction
 }

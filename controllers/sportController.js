@@ -25,37 +25,37 @@ const createPrediction = asyncHandler(async (req, res) => {
   const { time, tip, status, formationA, formationB, league, teamAPosition, teamBPosition, category, teamA, teamB, teamAscore, teamBscore, date } = req.body;
   const sport = req.params.sport
 
-  // const leagueIcon = req.files['leagueIcon'][0];
-  // const teamAIcon = req.files['teamAIcon'][0];
-  // const teamBIcon = req.files['teamBIcon'][0];
+  const leagueIcon = req.files['leagueIcon'][0];
+  const teamAIcon = req.files['teamAIcon'][0];
+  const teamBIcon = req.files['teamBIcon'][0];
 
   // // Validate the presence of file fields
-  // if (!leagueIcon || !teamAIcon || !teamBIcon) {
-  //   res.status(400).json({ error: "All image files are required" });
-  //   return;
-  // }
+  if (!leagueIcon || !teamAIcon || !teamBIcon) {
+    res.status(400).json({ error: "All image files are required" });
+    return;
+  }
 
   try {
-    // const result = await cloudinary.uploader.upload(leagueIcon.path, {
-    //   width: 500,
-    //   height: 500,
-    //   crop: 'scale',
-    // });
+    const result = await cloudinary.uploader.upload(leagueIcon.path, {
+      width: 500,
+      height: 500,
+      crop: 'scale',
+    });
 
-    // const result2 = await cloudinary.uploader.upload(teamAIcon.path, {
-    //   width: 500,
-    //   height: 500,
-    //   crop: 'scale'
-    // });
+    const result2 = await cloudinary.uploader.upload(teamAIcon.path, {
+      width: 500,
+      height: 500,
+      crop: 'scale'
+    });
 
-    // const result3 = await cloudinary.uploader.upload(teamBIcon.path, {
-    //   width: 500,
-    //   height: 500,
-    //   crop: 'scale'
-    // });
+    const result3 = await cloudinary.uploader.upload(teamBIcon.path, {
+      width: 500,
+      height: 500,
+      crop: 'scale'
+    });
 
     const prediction = await Sport.create({
-      time, tip, status, formationA, formationB, teamAPosition, teamBPosition, league, category,teamA, teamB, teamAscore, teamBscore, sport, date});
+      time, tip, status, formationA, formationB, teamAPosition, teamBPosition, league, category,teamA, teamB, teamAscore, teamBscore, leagueIcon: result.secure_url, teamAIcon: result2.secure_url, teamBIcon: result3.secure_url, sport, date});
 
     res.status(201).json({
       _id: prediction._id,
@@ -70,6 +70,9 @@ const createPrediction = asyncHandler(async (req, res) => {
       teamBscore: prediction. teamBscore,
       teamAPosition: prediction.teamAPosition,
       teamBPosition: prediction.teamBPosition,
+      leagueIcon: prediction.leagueIcon,
+      teamAIcon: prediction.teamAIcon,
+      teamBIcon: prediction.teamBIcon,
       league: prediction.league,
       sport: prediction.sport,
       category: prediction.category,
@@ -90,26 +93,26 @@ const updatePrediction = asyncHandler(async (req, res) => {
   } else {
     const { time, tip, status, formationA, formationB, teamBPosition, teamAPosition, league, category, teamA, teamB, teamAscore, teamBscore, date } = req.body;
 
-    // if (req.file) {
-    //   // If a new image is uploaded, update it in Cloudinary
-    //   const result = await cloudinary.uploader.upload(req.file.path, {
-    //     width: 500,
-    //     height: 500,
-    //     crop: "scale",
-    //     quality: 60
-    //   });
-    //   if (req.file.fieldname === "leagueIcon") {
-    //     leagueIcon = result.secure_url;
-    //   } else if (req.file.fieldname === "teamAIcon") {
-    //     teamAIcon = result.secure_url;
-    //   } else if (req.file.fieldname === "teamBIcon") {
-    //     teamBIcon = result.secure_url;
-    //   }
-    // }
+    if (req.file) {
+      // If a new image is uploaded, update it in Cloudinary
+      const result = await cloudinary.uploader.upload(req.file.path, {
+        width: 500,
+        height: 500,
+        crop: "scale",
+        quality: 60
+      });
+      if (req.file.fieldname === "leagueIcon") {
+        leagueIcon = result.secure_url;
+      } else if (req.file.fieldname === "teamAIcon") {
+        teamAIcon = result.secure_url;
+      } else if (req.file.fieldname === "teamBIcon") {
+        teamBIcon = result.secure_url;
+      }
+    }
 
     const updatedPrediction = await Sport.findByIdAndUpdate(
       req.params.id,
-      { time, tip, status, formationA, formationB, league, category, teamBPosition, teamAPosition, teamA, teamB, teamAscore, teamBscore, date },
+      { time, tip, status, formationA, formationB, leagueIcon, teamAIcon, teamBIcon, league, category, teamBPosition, teamAPosition, teamA, teamB, teamAscore, teamBscore, date },
       { new: true }
     );
 
