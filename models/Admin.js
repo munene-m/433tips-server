@@ -42,6 +42,9 @@ const adminSchema = new mongoose.Schema(
       type: String,
       trim: true
     },
+    jackpot:{
+      type: String
+    },
     supreme: {
       type: String,
       trim: true
