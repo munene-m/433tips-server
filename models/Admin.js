@@ -101,6 +101,13 @@ const adminSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+    country:{
+      type: String,
+      trim: true
+    },
+    jackpotName:{
+      type: String
+    },
     betOfTheDay: {
       type: String,
       trim: true,

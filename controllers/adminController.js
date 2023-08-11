@@ -454,7 +454,7 @@ const createBankerPrediction = asyncHandler(async (req, res) => {
 });
 
 const createJackpotPrediction = asyncHandler(async (req, res) => {
-  const { time, tip, status, formationA, formationB, league, teamAPosition, teamBPosition, category, teamA, teamB, teamAscore, teamBscore, date } = req.body;
+  const { time, tip, status, league,  category, country, jackpotName, teamA, teamB, teamAscore, teamBscore, date } = req.body;
   const jackpot = req.params.jackpot
 
   const leagueIcon = req.files['leagueIcon'][0];
@@ -487,7 +487,7 @@ const createJackpotPrediction = asyncHandler(async (req, res) => {
     });
 
     const prediction = await Admin.create({
-      time, tip, status, league, category,teamA, teamB, teamAscore, teamBscore, jackpot,date,leagueIcon: result.secure_url, teamAIcon: result2.secure_url, teamBIcon: result3.secure_url });
+      time, tip, status, league, category,teamA, teamB, teamAscore, teamBscore, country, jackpotName, jackpot,date,leagueIcon: result.secure_url, teamAIcon: result2.secure_url, teamBIcon: result3.secure_url });
 
     res.status(201).json({
       _id: prediction._id,
@@ -504,6 +504,8 @@ const createJackpotPrediction = asyncHandler(async (req, res) => {
       teamAIcon: prediction.teamAIcon,
       teamBIcon: prediction.teamBIcon,
       jackpot: prediction.jackpot, 
+      country: prediction.country,
+      jackpotName: prediction.jackpotName,
       date: prediction.date
     });
   } catch (error) {
