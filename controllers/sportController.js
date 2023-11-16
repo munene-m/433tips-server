@@ -51,20 +51,14 @@ const createPrediction = async (req, res) => {
 
   try {
     const result = await cloudinary.uploader.upload(leagueIcon.path, {
-      width: 500,
-      height: 500,
       crop: "scale",
     });
 
     const result2 = await cloudinary.uploader.upload(teamAIcon.path, {
-      width: 500,
-      height: 500,
       crop: "scale",
     });
 
     const result3 = await cloudinary.uploader.upload(teamBIcon.path, {
-      width: 500,
-      height: 500,
       crop: "scale",
     });
 
@@ -146,8 +140,6 @@ const updatePrediction = async (req, res) => {
     if (req.file) {
       // If a new image is uploaded, update it in Cloudinary
       const result = await cloudinary.uploader.upload(req.file.path, {
-        width: 500,
-        height: 500,
         crop: "scale",
         quality: 60,
       });
