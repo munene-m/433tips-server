@@ -165,8 +165,13 @@ const requestPasswordReset = async (req, res) => {
   const mailOptions = {
     from: process.env.EMAIL_FROM,
     to: email,
-    subject: "SportyPredict password reset",
-    text: `Click the following link to reset your password: \n ${process.env.CLIENT_URL}/reset-password/${resetToken}`,
+    subject: "433Tips password reset",
+    html: `
+    <p>Hi ${user.username},</p>
+    <p>We received a request to change your password. You can click the button below to proceed with creating a new password.</p>
+    <a href="${process.env.CLIENT_URL}/reset-password/${resetToken}" style="display: inline-block; padding: 10px 20px; background-color: #007BFF; color: #fff; text-decoration: none; border-radius: 5px; margin-top: 10px;">Reset Password</a>
+    <p style="margin-top: 10px">If you ignore this email, your password will not be changed. This link expires in 1 hour.</p>
+  `,
   };
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
