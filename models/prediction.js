@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const adminSchema = new mongoose.Schema(
+const predictionSchema = new mongoose.Schema(
   {
     time: {
       type: String,
@@ -33,37 +33,37 @@ const adminSchema = new mongoose.Schema(
       type: String,
     },
     teamBIcon: {
-      type: String
+      type: String,
     },
     category: {
       type: String,
     },
     banker: {
       type: String,
-      trim: true
+      trim: true,
     },
-    jackpot:{
-      type: String
+    jackpot: {
+      type: String,
     },
     supreme: {
       type: String,
-      trim: true
+      trim: true,
     },
     league: {
       type: String,
     },
     leagueIcon: {
-      type: String
+      type: String,
     },
     formationA: {
-      type: Array
+      type: Array,
     },
     formationB: {
-      type: Array
+      type: Array,
     },
     vip: {
       type: String,
-      trim: true
+      trim: true,
     },
     vipMega: {
       type: String,
@@ -87,11 +87,11 @@ const adminSchema = new mongoose.Schema(
     },
     expert: {
       type: String,
-      trim: true
+      trim: true,
     },
     dailyTen: {
       type: String,
-      trim: true
+      trim: true,
     },
     freeTip: {
       type: String,
@@ -101,12 +101,12 @@ const adminSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
-    country:{
+    country: {
       type: String,
-      trim: true
+      trim: true,
     },
-    jackpotName:{
-      type: String
+    jackpotName: {
+      type: String,
     },
     betOfTheDay: {
       type: String,
@@ -120,6 +120,6 @@ const adminSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Admin = mongoose.model("Admin", adminSchema);
+const Prediction = mongoose.model("Prediction", predictionSchema);
 
-module.exports = Admin;
+module.exports = Prediction;

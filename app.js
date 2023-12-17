@@ -11,7 +11,8 @@ const { connectDB } = require("./config/db");
 const bodyParser = require("body-parser");
 const adsRoute = require("./routes/imageAdRoute");
 const authRoute = require("./routes/authRoute");
-const adminRoute = require("./routes/adminRoute");
+const predictionRoute = require("./routes/predictionRoute");
+const sportdataRoute = require("./routes/sportdataRoute");
 const sportRoute = require("./routes/sportRoute");
 const PORT = 3000;
 
@@ -39,9 +40,10 @@ app.use(
 app.use(morgan("dev"));
 
 app.use("/auth", authRoute);
-app.use("/predictions", adminRoute);
+app.use("/predictions", predictionRoute);
 app.use("/sports", sportRoute);
 app.use("/ads", adsRoute);
+app.use("/sportdata", sportdataRoute);
 
 app.get("/", (req, res) => {
   const filePath = path.join(__dirname, "client", "index.html");

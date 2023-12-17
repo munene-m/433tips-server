@@ -1,4 +1,4 @@
-const Admin = require("../models/Admin");
+const Prediction = require("../models/prediction");
 const multer = require("multer");
 const cloudinary = require("cloudinary").v2;
 
@@ -61,7 +61,7 @@ const createPrediction = async (req, res) => {
       crop: "scale",
     });
 
-    const prediction = await Admin.create({
+    const prediction = await Prediction.create({
       time,
       tip,
       status,
@@ -139,7 +139,7 @@ const createVipPrediction = async (req, res) => {
       crop: "scale",
     });
 
-    const prediction = await Admin.create({
+    const prediction = await Prediction.create({
       time,
       tip,
       status,
@@ -219,7 +219,7 @@ const createVipMegaPrediction = async (req, res) => {
       crop: "scale",
     });
 
-    const prediction = await Admin.create({
+    const prediction = await Prediction.create({
       time,
       tip,
       status,
@@ -303,7 +303,7 @@ const createVipSinglePrediction = async (req, res) => {
       crop: "scale",
     });
 
-    const prediction = await Admin.create({
+    const prediction = await Prediction.create({
       time,
       tip,
       status,
@@ -395,7 +395,7 @@ const createVipInvestmentsPrediction = async (req, res) => {
       crop: "scale",
     });
 
-    const prediction = await Admin.create({
+    const prediction = await Prediction.create({
       time,
       tip,
       status,
@@ -495,7 +495,7 @@ const createVipExpertPrediction = async (req, res) => {
       crop: "scale",
     });
 
-    const prediction = await Admin.create({
+    const prediction = await Prediction.create({
       time,
       tip,
       status,
@@ -588,7 +588,7 @@ const createBankerPrediction = async (req, res) => {
       crop: "scale",
     });
 
-    const prediction = await Admin.create({
+    const prediction = await Prediction.create({
       time,
       tip,
       status,
@@ -679,7 +679,7 @@ const createJackpotPrediction = async (req, res) => {
       crop: "scale",
     });
 
-    const prediction = await Admin.create({
+    const prediction = await Prediction.create({
       time,
       tip,
       status,
@@ -767,7 +767,7 @@ const createVipSupremePrediction = async (req, res) => {
       crop: "scale",
     });
 
-    const prediction = await Admin.create({
+    const prediction = await Prediction.create({
       time,
       tip,
       status,
@@ -850,7 +850,7 @@ const createDailyTenPrediction = async (req, res) => {
       crop: "scale",
     });
 
-    const prediction = await Admin.create({
+    const prediction = await Prediction.create({
       time,
       tip,
       status,
@@ -933,7 +933,7 @@ const createSinglePrediction = async (req, res) => {
       crop: "scale",
     });
 
-    const prediction = await Admin.create({
+    const prediction = await Prediction.create({
       time,
       tip,
       status,
@@ -1020,7 +1020,7 @@ const createFreeTip = async (req, res) => {
       crop: "scale",
     });
 
-    const prediction = await Admin.create({
+    const prediction = await Prediction.create({
       time,
       tip,
       status,
@@ -1103,7 +1103,7 @@ const createUpcoming = async (req, res) => {
       crop: "scale",
     });
 
-    const prediction = await Admin.create({
+    const prediction = await Prediction.create({
       time,
       tip,
       status,
@@ -1194,7 +1194,7 @@ const createBetOfTheDay = async (req, res) => {
       crop: "scale",
     });
 
-    const prediction = await Admin.create({
+    const prediction = await Prediction.create({
       time,
       tip,
       status,
@@ -1245,7 +1245,7 @@ const createBetOfTheDay = async (req, res) => {
 };
 
 const updatePrediction = async (req, res) => {
-  const prediction = await Admin.findById(req.params.id);
+  const prediction = await Prediction.findById(req.params.id);
 
   if (!prediction) {
     return res
@@ -1288,7 +1288,7 @@ const updatePrediction = async (req, res) => {
       }
     }
 
-    const updatedPrediction = await Admin.findByIdAndUpdate(
+    const updatedPrediction = await Prediction.findByIdAndUpdate(
       req.params.id,
       {
         time,
@@ -1319,7 +1319,7 @@ const updatePrediction = async (req, res) => {
 
 const getPrediction = async (req, res) => {
   try {
-    const prediction = await Admin.findById(req.params.id);
+    const prediction = await Prediction.findById(req.params.id);
     if (!prediction) {
       return res.status(400).json({ message: "Prediction does not exist" });
     } else {
@@ -1333,7 +1333,7 @@ const getPrediction = async (req, res) => {
 const getVipPredictions = async (req, res) => {
   try {
     // const date = req.params.date
-    const predictions = await Admin.find({
+    const predictions = await Prediction.find({
       vip: decodeURIComponent(req.params.value),
       date: req.params.date,
     });
@@ -1350,7 +1350,7 @@ const getVipPredictions = async (req, res) => {
 // const getVipDates = asyncHandler(async (req, res) => {
 //   try {
 //     const { value } = req.params;
-//     const predictions = await Admin.find({ date: value });
+//     const predictions = await Prediction.find({ date: value });
 
 //     if (!predictions || predictions.length === 0) {
 //       res.status(400);
@@ -1365,7 +1365,7 @@ const getVipPredictions = async (req, res) => {
 
 const getFreeTips = async (req, res) => {
   try {
-    const predictions = await Admin.find({
+    const predictions = await Prediction.find({
       freeTip: decodeURIComponent(req.params.value),
       date: req.params.date,
     });
@@ -1380,7 +1380,7 @@ const getFreeTips = async (req, res) => {
 };
 // const getSingleFreetip = asyncHandler(async(req, res) => {
 //   try {
-//     const predictions = await Admin.find({freeTip: decodeURIComponent(req.params.value), id:req.params.id, date:req.params.date})
+//     const predictions = await Prediction.find({freeTip: decodeURIComponent(req.params.value), id:req.params.id, date:req.params.date})
 //     if (!predictions) {
 //       res.status(400);
 //       throw new Error("Prediction not found");
@@ -1394,7 +1394,7 @@ const getFreeTips = async (req, res) => {
 
 const getUpcoming = async (req, res) => {
   try {
-    const predictions = await Admin.find({
+    const predictions = await Prediction.find({
       upcoming: decodeURIComponent(req.params.value),
       date: req.params.date,
     });
@@ -1410,7 +1410,7 @@ const getUpcoming = async (req, res) => {
 
 const getSupreme = async (req, res) => {
   try {
-    const predictions = await Admin.find({
+    const predictions = await Prediction.find({
       supreme: decodeURIComponent(req.params.value),
       date: req.params.date,
     });
@@ -1426,7 +1426,7 @@ const getSupreme = async (req, res) => {
 
 const getVipMega = async (req, res) => {
   try {
-    const predictions = await Admin.find({
+    const predictions = await Prediction.find({
       vipMega: decodeURIComponent(req.params.value),
       date: req.params.date,
     });
@@ -1442,7 +1442,7 @@ const getVipMega = async (req, res) => {
 
 const getVipDailyTen = async (req, res) => {
   try {
-    const predictions = await Admin.find({
+    const predictions = await Prediction.find({
       dailyTen: decodeURIComponent(req.params.value),
       date: req.params.date,
     });
@@ -1458,7 +1458,7 @@ const getVipDailyTen = async (req, res) => {
 
 const getBankerOfTheDay = async (req, res) => {
   try {
-    const predictions = await Admin.find({
+    const predictions = await Prediction.find({
       banker: decodeURIComponent(req.params.value),
       date: req.params.date,
     });
@@ -1474,7 +1474,7 @@ const getBankerOfTheDay = async (req, res) => {
 
 const getFreeExpert = async (req, res) => {
   try {
-    const predictions = await Admin.find({
+    const predictions = await Prediction.find({
       expert: decodeURIComponent(req.params.value),
       date: req.params.date,
     });
@@ -1490,7 +1490,7 @@ const getFreeExpert = async (req, res) => {
 
 const getJackpot = async (req, res) => {
   try {
-    const predictions = await Admin.find({
+    const predictions = await Prediction.find({
       jackpot: decodeURIComponent(req.params.value),
       date: req.params.date,
     });
@@ -1506,7 +1506,7 @@ const getJackpot = async (req, res) => {
 
 const getBetOfTheDay = async (req, res) => {
   try {
-    const predictions = await Admin.find({
+    const predictions = await Prediction.find({
       betOfTheDay: decodeURIComponent(req.params.value),
       date: req.params.date,
     });
@@ -1523,7 +1523,7 @@ const getBetOfTheDay = async (req, res) => {
 };
 
 const getPredictionInCategory = async (req, res) => {
-  const predictions = await Admin.find({
+  const predictions = await Prediction.find({
     category: decodeURIComponent(req.params.value),
     date: req.params.date,
   });
@@ -1536,7 +1536,7 @@ const getPredictionInCategory = async (req, res) => {
 
 const getPredictions = async (req, res) => {
   try {
-    const predictions = await Admin.find({ date: req.params.date });
+    const predictions = await Prediction.find({ date: req.params.date });
     if (!predictions) {
       return res
         .status(404)
@@ -1556,11 +1556,11 @@ const getPredictions = async (req, res) => {
 
 const deletePrediction = async (req, res) => {
   try {
-    const prediction = await Admin.findById(req.params.id);
+    const prediction = await Prediction.findById(req.params.id);
     if (!prediction) {
       return res.status(404).json({ error: "Prediction not found" });
     }
-    await Admin.findByIdAndDelete(req.params.id);
+    await Prediction.findByIdAndDelete(req.params.id);
     res.status(200).json({ id: req.params.id, message: "Prediction deleted" });
     return;
   } catch (err) {
