@@ -6,26 +6,16 @@ const {
   createPrediction,
   createVipPrediction,
   createFreeTip,
-  createUpcoming,
   getJackpot,
   createJackpotPrediction,
-  getFreeExpert,
-  getVipDailyTen,
-  getSupreme,
-  getBankerOfTheDay,
-  getVipMega,
   createVipSupremePrediction,
   createSinglePrediction,
   createDailyTenPrediction,
-  createBetOfTheDay,
   createVipExpertPrediction,
-  createVipSinglePrediction,
-  createVipInvestmentsPrediction,
   createVipMegaPrediction,
   updatePrediction,
   getPrediction,
   getBetOfTheDay,
-  getUpcoming,
   getPredictions,
   getFreeTips,
   getVipPredictions,
@@ -39,14 +29,8 @@ router.route("/:date").get(getPredictions);
 router.route("/single/:id").get(getPrediction);
 router.route("/tips/:value/:date").get(getFreeTips);
 router.route("/vipPredictions/:value/:date").get(getVipPredictions);
-router.route("/upcomingPredictions/:value/:date").get(getUpcoming);
-router.route("/vipSupreme/:value/:date").get(getSupreme);
-router.route("/vipMega/:value/:date").get(getVipMega);
 router.route("/jackpot-predictions/:value/:date").get(getJackpot);
 router.route("/bet/:value/:date").get(getBetOfTheDay);
-router.route("/bankerPrediction/:value/:date").get(getBankerOfTheDay);
-router.route("/daily-ten-prediction/:value/:date").get(getVipDailyTen);
-router.route("/free-expert/:value/:date").get(getFreeExpert);
 router.route("/create").post(protect, createPrediction);
 
 router
@@ -146,30 +130,6 @@ router
   );
 
 router
-  .route("/create/investments/:vipInvestments")
-  .post(
-    protect,
-    upload.fields([
-      { name: "leagueIcon" },
-      { name: "teamAIcon" },
-      { name: "teamBIcon" },
-    ]),
-    createVipInvestmentsPrediction
-  );
-
-router
-  .route("/create/singleVip/:single")
-  .post(
-    protect,
-    upload.fields([
-      { name: "leagueIcon" },
-      { name: "teamAIcon" },
-      { name: "teamBIcon" },
-    ]),
-    createVipSinglePrediction
-  );
-
-router
   .route("/create/tip/:freeTip")
   .post(
     protect,
@@ -179,30 +139,6 @@ router
       { name: "teamBIcon" },
     ]),
     createFreeTip
-  );
-
-router
-  .route("/create/upcoming/:upcoming")
-  .post(
-    protect,
-    upload.fields([
-      { name: "leagueIcon" },
-      { name: "teamAIcon" },
-      { name: "teamBIcon" },
-    ]),
-    createUpcoming
-  );
-
-router
-  .route("/create/bet/:betOfTheDay")
-  .post(
-    protect,
-    upload.fields([
-      { name: "leagueIcon" },
-      { name: "teamAIcon" },
-      { name: "teamBIcon" },
-    ]),
-    createBetOfTheDay
   );
 
 router
