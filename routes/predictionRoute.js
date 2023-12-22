@@ -8,11 +8,7 @@ const {
   createFreeTip,
   getJackpot,
   createJackpotPrediction,
-  createVipSupremePrediction,
   createSinglePrediction,
-  createDailyTenPrediction,
-  createVipExpertPrediction,
-  createVipMegaPrediction,
   updatePrediction,
   getPrediction,
   getBetOfTheDay,
@@ -21,7 +17,6 @@ const {
   getVipPredictions,
   getPredictionInCategory,
   deletePrediction,
-  createBankerPrediction,
 } = require("../controllers/predictionController");
 const { protect } = require("../middleware/authMiddleware");
 
@@ -46,54 +41,6 @@ router
   );
 
 router
-  .route("/create/mega/:vipMega")
-  .post(
-    protect,
-    upload.fields([
-      { name: "leagueIcon" },
-      { name: "teamAIcon" },
-      { name: "teamBIcon" },
-    ]),
-    createVipMegaPrediction
-  );
-
-router
-  .route("/create/freeExpert/:expert")
-  .post(
-    protect,
-    upload.fields([
-      { name: "leagueIcon" },
-      { name: "teamAIcon" },
-      { name: "teamBIcon" },
-    ]),
-    createVipExpertPrediction
-  );
-
-router
-  .route("/create/daily/:dailyTen")
-  .post(
-    protect,
-    upload.fields([
-      { name: "leagueIcon" },
-      { name: "teamAIcon" },
-      { name: "teamBIcon" },
-    ]),
-    createDailyTenPrediction
-  );
-
-router
-  .route("/create/supremeVip/:supreme")
-  .post(
-    protect,
-    upload.fields([
-      { name: "leagueIcon" },
-      { name: "teamAIcon" },
-      { name: "teamBIcon" },
-    ]),
-    createVipSupremePrediction
-  );
-
-router
   .route("/create/singleTip/:single")
   .post(
     protect,
@@ -115,18 +62,6 @@ router
       { name: "teamBIcon" },
     ]),
     createJackpotPrediction
-  );
-
-router
-  .route("/create/banker-predictions/:banker")
-  .post(
-    protect,
-    upload.fields([
-      { name: "leagueIcon" },
-      { name: "teamAIcon" },
-      { name: "teamBIcon" },
-    ]),
-    createBankerPrediction
   );
 
 router
