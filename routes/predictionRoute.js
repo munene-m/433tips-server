@@ -11,7 +11,6 @@ const {
   createSinglePrediction,
   updatePrediction,
   getPrediction,
-  getBetOfTheDay,
   getPredictions,
   getFreeTips,
   getVipPredictions,
@@ -25,7 +24,6 @@ router.route("/single/:id").get(getPrediction);
 router.route("/tips/:value/:date").get(getFreeTips);
 router.route("/vipPredictions/:value/:date").get(getVipPredictions);
 router.route("/jackpot-predictions/:value/:date").get(getJackpot);
-// router.route("/bet/:value/:date").get(getBetOfTheDay);
 router.route("/create").post(protect, createPrediction);
 
 router
