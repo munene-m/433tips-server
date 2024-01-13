@@ -2,8 +2,6 @@ const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
-const { protect } = require("../middleware/authMiddleware");
-// require('../passport.js')
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
