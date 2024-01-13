@@ -377,6 +377,7 @@ const updatePrediction = async (req, res) => {
       teamB,
       teamAscore,
       teamBscore,
+      showScore,
       date,
     } = req.body;
     const vip = req.params.vip;
@@ -420,6 +421,7 @@ const updatePrediction = async (req, res) => {
         teamBscore,
         vip,
         date,
+        showScore,
       },
       { new: true }
     );
