@@ -114,7 +114,10 @@ const predictionSchema = new mongoose.Schema(
     },
     date: {
       type: String,
-      // default: Date.now()
+    },
+    showScore: {
+      type: Boolean,
+      default: false,
     },
   },
   { timestamps: true }
