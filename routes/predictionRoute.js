@@ -24,7 +24,17 @@ router.route("/single/:id").get(getPrediction);
 router.route("/tips/:value/:date").get(getFreeTips);
 router.route("/vipPredictions/:value/:date").get(getVipPredictions);
 router.route("/jackpot-predictions/:value/:date").get(getJackpot);
-router.route("/create").post(protect, createPrediction);
+router
+  .route("/create")
+  .post(
+    protect,
+    upload.fields([
+      { name: "leagueIcon" },
+      { name: "teamAIcon" },
+      { name: "teamBIcon" },
+    ]),
+    createPrediction
+  );
 
 router
   .route("/create/:vip")
