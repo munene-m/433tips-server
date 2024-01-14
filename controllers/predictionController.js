@@ -511,9 +511,13 @@ const updatePrediction = async (req, res) => {
 
 const getPrediction = async (req, res) => {
   try {
-    const prediction = await Prediction.findById(req.params.id);
+    const prediction = await Prediction.findOne({
+      date: req.params.date,
+      teamA: req.params.teamA,
+      teamB: req.params.teamB,
+    });
     if (!prediction) {
-      return res.status(400).json({ message: "Prediction does not exist" });
+      return res.status(404).json({ message: "Prediction not found" });
     } else {
       res.status(200).json(prediction);
     }
