@@ -20,16 +20,22 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+const handleImageUpload = async (imageFile) => {
+  try {
+    const result = await cloudinary.uploader.upload(imageFile.path);
+    return result.secure_url;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Error uploading image");
+  }
+};
+
 const createPrediction = async (req, res) => {
   const {
     time,
     tip,
     status,
-    formationA,
-    formationB,
     league,
-    teamAPosition,
-    teamBPosition,
     category,
     teamA,
     teamB,
@@ -38,28 +44,59 @@ const createPrediction = async (req, res) => {
     date,
   } = req.body;
 
-  const leagueIcon = req.files["leagueIcon"][0];
-  const teamAIcon = req.files["teamAIcon"][0];
-  const teamBIcon = req.files["teamBIcon"][0];
+  // if (!req.files) {
+  //   res.status(400).json({ error: "No files uploaded" });
+  //   return;
+  // }
+  const leagueIcon = req.files["leagueIcon"]
+    ? req.files["leagueIcon"][0]
+    : req.body["leagueIcon"];
+  const teamAIcon = req.files["teamAIcon"]
+    ? req.files["teamAIcon"][0]
+    : req.body["teamAIcon"];
+  const teamBIcon = req.files["teamBIcon"]
+    ? req.files["teamBIcon"][0]
+    : req.body["teamBIcon"];
 
-  // Validate the presence of file fields
-  if (!leagueIcon || !teamAIcon || !teamBIcon) {
+  if (
+    (req.files["leagueIcon"] ||
+      req.files["teamAIcon"] ||
+      req.files["teamBIcon"]) &&
+    (!leagueIcon || !teamAIcon || !teamBIcon)
+  ) {
     res.status(400).json({ error: "All image files are required" });
     return;
   }
 
   try {
-    const result = await cloudinary.uploader.upload(leagueIcon.path, {
-      crop: "scale",
-    });
+    let leagueIconUrl, teamAIconUrl, teamBIconUrl;
 
-    const result2 = await cloudinary.uploader.upload(teamAIcon.path, {
-      crop: "scale",
-    });
+    if (req.files["leagueIcon"]) {
+      leagueIconUrl = await handleImageUpload(leagueIcon);
+    } else {
+      leagueIconUrl = leagueIcon;
+      if (typeof leagueIconUrl !== "string") {
+        return res.status(400).json({ error: "Invalid leagueIcon URL" });
+      }
+    }
 
-    const result3 = await cloudinary.uploader.upload(teamBIcon.path, {
-      crop: "scale",
-    });
+    if (req.files["teamAIcon"]) {
+      teamAIconUrl = await handleImageUpload(teamAIcon);
+    } else {
+      teamAIconUrl = teamAIcon;
+      if (typeof teamAIconUrl !== "string") {
+        return res.status(400).json({ error: "Invalid teamAIcon URL" });
+      }
+    }
+
+    if (req.files["teamBIcon"]) {
+      teamBIconUrl = await handleImageUpload(teamBIcon);
+    } else {
+      teamBIconUrl = teamBIcon;
+      if (typeof teamBIconUrl !== "string") {
+        return res.status(400).json({ error: "Invalid teamBIcon URL" });
+      }
+    }
 
     const prediction = await Prediction.create({
       time,
@@ -72,31 +109,16 @@ const createPrediction = async (req, res) => {
       teamAscore,
       teamBscore,
       date,
-      leagueIcon: result.secure_url,
-      teamAIcon: result2.secure_url,
-      teamBIcon: result3.secure_url,
+      leagueIcon: leagueIconUrl,
+      teamAIcon: teamAIconUrl,
+      teamBIcon: teamBIconUrl,
     });
 
-    res.status(201).json({
-      _id: prediction._id,
-      time: prediction.time,
-      tip: prediction.tip,
-      status: prediction.status,
-      teamA: prediction.teamA,
-      teamB: prediction.teamB,
-      teamAscore: prediction.teamAscore,
-      teamBscore: prediction.teamBscore,
-      league: prediction.league,
-      category: prediction.category,
-      leagueIcon: prediction.leagueIcon,
-      teamAIcon: prediction.teamAIcon,
-      teamBIcon: prediction.teamBIcon,
-      date: prediction.date,
-    });
+    res.status(201).json({ ...prediction.toObject() });
   } catch (error) {
     console.log(error);
     res
-      .status(500)
+      .status(400)
       .json({ error: "An error occurred when creating the prediction" });
   }
 };
@@ -116,28 +138,55 @@ const createVipPrediction = async (req, res) => {
   } = req.body;
   const vip = req.params.vip;
 
-  const leagueIcon = req.files["leagueIcon"][0];
-  const teamAIcon = req.files["teamAIcon"][0];
-  const teamBIcon = req.files["teamBIcon"][0];
+  const leagueIcon = req.files["leagueIcon"]
+    ? req.files["leagueIcon"][0]
+    : req.body["leagueIcon"];
+  const teamAIcon = req.files["teamAIcon"]
+    ? req.files["teamAIcon"][0]
+    : req.body["teamAIcon"];
+  const teamBIcon = req.files["teamBIcon"]
+    ? req.files["teamBIcon"][0]
+    : req.body["teamBIcon"];
 
-  // Validate the presence of file fields
-  if (!leagueIcon || !teamAIcon || !teamBIcon) {
+  if (
+    (req.files["leagueIcon"] ||
+      req.files["teamAIcon"] ||
+      req.files["teamBIcon"]) &&
+    (!leagueIcon || !teamAIcon || !teamBIcon)
+  ) {
     res.status(400).json({ error: "All image files are required" });
     return;
   }
 
   try {
-    const result = await cloudinary.uploader.upload(leagueIcon.path, {
-      crop: "scale",
-    });
+    let leagueIconUrl, teamAIconUrl, teamBIconUrl;
 
-    const result2 = await cloudinary.uploader.upload(teamAIcon.path, {
-      crop: "scale",
-    });
+    if (req.files["leagueIcon"]) {
+      leagueIconUrl = await handleImageUpload(leagueIcon);
+    } else {
+      leagueIconUrl = leagueIcon;
+      if (typeof leagueIconUrl !== "string") {
+        return res.status(400).json({ error: "Invalid leagueIcon URL" });
+      }
+    }
 
-    const result3 = await cloudinary.uploader.upload(teamBIcon.path, {
-      crop: "scale",
-    });
+    if (req.files["teamAIcon"]) {
+      teamAIconUrl = await handleImageUpload(teamAIcon);
+    } else {
+      teamAIconUrl = teamAIcon;
+      if (typeof teamAIconUrl !== "string") {
+        return res.status(400).json({ error: "Invalid teamAIcon URL" });
+      }
+    }
+
+    if (req.files["teamBIcon"]) {
+      teamBIconUrl = await handleImageUpload(teamBIcon);
+    } else {
+      teamBIconUrl = teamBIcon;
+      if (typeof teamBIconUrl !== "string") {
+        return res.status(400).json({ error: "Invalid teamBIcon URL" });
+      }
+    }
 
     const prediction = await Prediction.create({
       time,
@@ -149,34 +198,18 @@ const createVipPrediction = async (req, res) => {
       teamB,
       teamAscore,
       teamBscore,
-      vip,
       date,
-      leagueIcon: result.secure_url,
-      teamAIcon: result2.secure_url,
-      teamBIcon: result3.secure_url,
+      vip,
+      leagueIcon: leagueIconUrl,
+      teamAIcon: teamAIconUrl,
+      teamBIcon: teamBIconUrl,
     });
 
-    res.status(201).json({
-      _id: prediction._id,
-      time: prediction.time,
-      tip: prediction.tip,
-      status: prediction.status,
-      teamA: prediction.teamA,
-      teamB: prediction.teamB,
-      teamAscore: prediction.teamAscore,
-      teamBscore: prediction.teamBscore,
-      league: prediction.league,
-      category: prediction.category,
-      leagueIcon: prediction.leagueIcon,
-      teamAIcon: prediction.teamAIcon,
-      teamBIcon: prediction.teamBIcon,
-      vip: prediction.vip,
-      date: prediction.date,
-    });
+    res.status(201).json({ ...prediction.toObject() });
   } catch (error) {
     console.log(error);
     res
-      .status(500)
+      .status(400)
       .json({ error: "An error occurred when creating the prediction" });
   }
 };
@@ -198,9 +231,25 @@ const createJackpotPrediction = async (req, res) => {
   } = req.body;
   const jackpot = req.params.jackpot;
 
-  const leagueIcon = req.files["leagueIcon"][0];
-  const teamAIcon = req.files["teamAIcon"][0];
-  const teamBIcon = req.files["teamBIcon"][0];
+  const leagueIcon = req.files["leagueIcon"]
+    ? req.files["leagueIcon"][0]
+    : req.body["leagueIcon"];
+  const teamAIcon = req.files["teamAIcon"]
+    ? req.files["teamAIcon"][0]
+    : req.body["teamAIcon"];
+  const teamBIcon = req.files["teamBIcon"]
+    ? req.files["teamBIcon"][0]
+    : req.body["teamBIcon"];
+
+  if (
+    (req.files["leagueIcon"] ||
+      req.files["teamAIcon"] ||
+      req.files["teamBIcon"]) &&
+    (!leagueIcon || !teamAIcon || !teamBIcon)
+  ) {
+    res.status(400).json({ error: "All image files are required" });
+    return;
+  }
 
   // Validate the presence of file fields
   if (
@@ -218,17 +267,34 @@ const createJackpotPrediction = async (req, res) => {
   }
 
   try {
-    const result = await cloudinary.uploader.upload(leagueIcon.path, {
-      crop: "scale",
-    });
+    let leagueIconUrl, teamAIconUrl, teamBIconUrl;
 
-    const result2 = await cloudinary.uploader.upload(teamAIcon.path, {
-      crop: "scale",
-    });
+    if (req.files["leagueIcon"]) {
+      leagueIconUrl = await handleImageUpload(leagueIcon);
+    } else {
+      leagueIconUrl = leagueIcon;
+      if (typeof leagueIconUrl !== "string") {
+        return res.status(400).json({ error: "Invalid leagueIcon URL" });
+      }
+    }
 
-    const result3 = await cloudinary.uploader.upload(teamBIcon.path, {
-      crop: "scale",
-    });
+    if (req.files["teamAIcon"]) {
+      teamAIconUrl = await handleImageUpload(teamAIcon);
+    } else {
+      teamAIconUrl = teamAIcon;
+      if (typeof teamAIconUrl !== "string") {
+        return res.status(400).json({ error: "Invalid teamAIcon URL" });
+      }
+    }
+
+    if (req.files["teamBIcon"]) {
+      teamBIconUrl = await handleImageUpload(teamBIcon);
+    } else {
+      teamBIconUrl = teamBIcon;
+      if (typeof teamBIconUrl !== "string") {
+        return res.status(400).json({ error: "Invalid teamBIcon URL" });
+      }
+    }
 
     const prediction = await Prediction.create({
       time,
@@ -240,38 +306,20 @@ const createJackpotPrediction = async (req, res) => {
       teamB,
       teamAscore,
       teamBscore,
+      date,
+      jackpot,
       country,
       jackpotName,
-      jackpot,
-      date,
-      leagueIcon: result.secure_url,
-      teamAIcon: result2.secure_url,
-      teamBIcon: result3.secure_url,
+      leagueIcon: leagueIconUrl,
+      teamAIcon: teamAIconUrl,
+      teamBIcon: teamBIconUrl,
     });
 
-    res.status(201).json({
-      _id: prediction._id,
-      time: prediction.time,
-      tip: prediction.tip,
-      status: prediction.status,
-      teamA: prediction.teamA,
-      teamB: prediction.teamB,
-      teamAscore: prediction.teamAscore,
-      teamBscore: prediction.teamBscore,
-      league: prediction.league,
-      category: prediction.category,
-      leagueIcon: prediction.leagueIcon,
-      teamAIcon: prediction.teamAIcon,
-      teamBIcon: prediction.teamBIcon,
-      jackpot: prediction.jackpot,
-      country: prediction.country,
-      jackpotName: prediction.jackpotName,
-      date: prediction.date,
-    });
+    res.status(201).json({ ...prediction.toObject() });
   } catch (error) {
     console.log(error);
     res
-      .status(500)
+      .status(400)
       .json({ error: "An error occurred when creating the prediction" });
   }
 };
@@ -291,27 +339,55 @@ const createFreeTip = async (req, res) => {
   } = req.body;
   const freeTip = req.params.freeTip;
 
-  const leagueIcon = req.files["leagueIcon"][0];
-  const teamAIcon = req.files["teamAIcon"][0];
-  const teamBIcon = req.files["teamBIcon"][0];
+  const leagueIcon = req.files["leagueIcon"]
+    ? req.files["leagueIcon"][0]
+    : req.body["leagueIcon"];
+  const teamAIcon = req.files["teamAIcon"]
+    ? req.files["teamAIcon"][0]
+    : req.body["teamAIcon"];
+  const teamBIcon = req.files["teamBIcon"]
+    ? req.files["teamBIcon"][0]
+    : req.body["teamBIcon"];
 
-  // Validate the presence of file fields
-  if (!leagueIcon || !teamAIcon || !teamBIcon) {
-    return res.status(400).json({ error: "All image files are required" });
+  if (
+    (req.files["leagueIcon"] ||
+      req.files["teamAIcon"] ||
+      req.files["teamBIcon"]) &&
+    (!leagueIcon || !teamAIcon || !teamBIcon)
+  ) {
+    res.status(400).json({ error: "All image files are required" });
+    return;
   }
 
   try {
-    const result = await cloudinary.uploader.upload(leagueIcon.path, {
-      crop: "scale",
-    });
+    let leagueIconUrl, teamAIconUrl, teamBIconUrl;
 
-    const result2 = await cloudinary.uploader.upload(teamAIcon.path, {
-      crop: "scale",
-    });
+    if (req.files["leagueIcon"]) {
+      leagueIconUrl = await handleImageUpload(leagueIcon);
+    } else {
+      leagueIconUrl = leagueIcon;
+      if (typeof leagueIconUrl !== "string") {
+        return res.status(400).json({ error: "Invalid leagueIcon URL" });
+      }
+    }
 
-    const result3 = await cloudinary.uploader.upload(teamBIcon.path, {
-      crop: "scale",
-    });
+    if (req.files["teamAIcon"]) {
+      teamAIconUrl = await handleImageUpload(teamAIcon);
+    } else {
+      teamAIconUrl = teamAIcon;
+      if (typeof teamAIconUrl !== "string") {
+        return res.status(400).json({ error: "Invalid teamAIcon URL" });
+      }
+    }
+
+    if (req.files["teamBIcon"]) {
+      teamBIconUrl = await handleImageUpload(teamBIcon);
+    } else {
+      teamBIconUrl = teamBIcon;
+      if (typeof teamBIconUrl !== "string") {
+        return res.status(400).json({ error: "Invalid teamBIcon URL" });
+      }
+    }
 
     const prediction = await Prediction.create({
       time,
@@ -323,34 +399,18 @@ const createFreeTip = async (req, res) => {
       teamB,
       teamAscore,
       teamBscore,
-      freeTip,
       date,
-      leagueIcon: result.secure_url,
-      teamAIcon: result2.secure_url,
-      teamBIcon: result3.secure_url,
+      freeTip,
+      leagueIcon: leagueIconUrl,
+      teamAIcon: teamAIconUrl,
+      teamBIcon: teamBIconUrl,
     });
 
-    res.status(201).json({
-      _id: prediction._id,
-      time: prediction.time,
-      tip: prediction.tip,
-      status: prediction.status,
-      teamA: prediction.teamA,
-      teamB: prediction.teamB,
-      teamAscore: prediction.teamAscore,
-      teamBscore: prediction.teamBscore,
-      league: prediction.league,
-      category: prediction.category,
-      leagueIcon: prediction.leagueIcon,
-      teamAIcon: prediction.teamAIcon,
-      teamBIcon: prediction.teamBIcon,
-      freeTip: prediction.freeTip,
-      date: prediction.date,
-    });
+    res.status(201).json({ ...prediction.toObject() });
   } catch (error) {
     console.log(error);
     res
-      .status(500)
+      .status(400)
       .json({ error: "An error occurred when creating the prediction" });
   }
 };
@@ -381,22 +441,25 @@ const updatePrediction = async (req, res) => {
       date,
     } = req.body;
     const vip = req.params.vip;
+
     let leagueIcon = prediction.leagueIcon;
     let teamAIcon = prediction.teamAIcon;
     let teamBIcon = prediction.teamBIcon;
 
-    if (req.file) {
-      // If a new image is uploaded, update it in Cloudinary
-      const result = await cloudinary.uploader.upload(req.file.path, {
-        crop: "scale",
-        quality: 60,
-      });
-      if (req.file.fieldname === "leagueIcon") {
-        leagueIcon = result.secure_url;
-      } else if (req.file.fieldname === "teamAIcon") {
-        teamAIcon = result.secure_url;
-      } else if (req.file.fieldname === "teamBIcon") {
-        teamBIcon = result.secure_url;
+    if (req.files) {
+      // Handle leagueIcon
+      if (req.files["leagueIcon"]) {
+        leagueIcon = await handleImageUpload(req.files["leagueIcon"][0]);
+      }
+
+      // Handle teamAIcon
+      if (req.files["teamAIcon"]) {
+        teamAIcon = await handleImageUpload(req.files["teamAIcon"][0]);
+      }
+
+      // Handle teamBIcon
+      if (req.files["teamBIcon"]) {
+        teamBIcon = await handleImageUpload(req.files["teamBIcon"][0]);
       }
     }
 
@@ -459,22 +522,6 @@ const getVipPredictions = async (req, res) => {
     console.log(err);
   }
 };
-
-// const getVipDates = asyncHandler(async (req, res) => {
-//   try {
-//     const { value } = req.params;
-//     const predictions = await Prediction.find({ date: value });
-
-//     if (!predictions || predictions.length === 0) {
-//       res.status(400);
-//       throw new Error("Prediction not found");
-//     }
-
-//     res.status(200).json(predictions);
-//   } catch (err) {
-//     console.log(err);
-//   }
-// });
 
 const getFreeTips = async (req, res) => {
   try {
