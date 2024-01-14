@@ -41,6 +41,8 @@ const createPrediction = async (req, res) => {
     teamB,
     teamAscore,
     teamBscore,
+    formationA,
+    formationB,
     date,
   } = req.body;
 
@@ -107,6 +109,8 @@ const createPrediction = async (req, res) => {
       teamA,
       teamB,
       teamAscore,
+      formationA,
+      formationB,
       teamBscore,
       date,
       leagueIcon: leagueIconUrl,
@@ -135,6 +139,8 @@ const createVipPrediction = async (req, res) => {
     teamAscore,
     teamBscore,
     date,
+    formationA,
+    formationB,
   } = req.body;
   const vip = req.params.vip;
 
@@ -200,6 +206,8 @@ const createVipPrediction = async (req, res) => {
       teamBscore,
       date,
       vip,
+      formationA,
+      formationB,
       leagueIcon: leagueIconUrl,
       teamAIcon: teamAIconUrl,
       teamBIcon: teamBIconUrl,
@@ -227,6 +235,8 @@ const createJackpotPrediction = async (req, res) => {
     teamB,
     teamAscore,
     teamBscore,
+    formationA,
+    formationB,
     date,
   } = req.body;
   const jackpot = req.params.jackpot;
@@ -310,6 +320,8 @@ const createJackpotPrediction = async (req, res) => {
       jackpot,
       country,
       jackpotName,
+      formationA,
+      formationB,
       leagueIcon: leagueIconUrl,
       teamAIcon: teamAIconUrl,
       teamBIcon: teamBIconUrl,
@@ -335,6 +347,8 @@ const createFreeTip = async (req, res) => {
     teamB,
     teamAscore,
     teamBscore,
+    formationA,
+    formationB,
     date,
   } = req.body;
   const freeTip = req.params.freeTip;
@@ -401,6 +415,8 @@ const createFreeTip = async (req, res) => {
       teamBscore,
       date,
       freeTip,
+      formationA,
+      formationB,
       leagueIcon: leagueIconUrl,
       teamAIcon: teamAIconUrl,
       teamBIcon: teamBIconUrl,
