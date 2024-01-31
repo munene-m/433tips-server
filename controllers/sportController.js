@@ -107,8 +107,11 @@ const createPrediction = async (req, res) => {
   } catch (error) {
     console.log(error);
     res
-      .status(500)
-      .json({ error: "An error occurred when creating the prediction" });
+      .status(400)
+      .json({
+        message: "An error occurred when creating the prediction",
+        error,
+      });
   }
 };
 
