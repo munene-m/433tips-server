@@ -15,6 +15,7 @@ const { protect } = require("../middleware/authMiddleware");
 router
   .route("/create/:sport")
   .post(
+    protect,
     upload.fields([
       { name: "leagueIcon" },
       { name: "teamAIcon" },
@@ -33,7 +34,7 @@ router
     ]),
     updatePrediction
   );
-router.route("/prediction/:id").get(getPrediction);
+router.route("/single/:date/:teamA/:teamB").get(getPrediction);
 router.route("/:date").get(getPredictions);
 router.route("/sport/:value/:date").get(getPredictionFromSport);
 router.route("/delete/:id").delete(protect, deletePrediction);
